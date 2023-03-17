@@ -61,4 +61,36 @@ const addMeal = (mealData, random = false) => {
   `;
 
   meals.appendChild(meal);
+
+  const LikeButton = meal.querySelector(".fav-btn > i");
+
+  LikeButton.addEventListener("click", () => {
+    console.log(LikeButton);
+    if (LikeButton.classList.contains("fa-solid")) {
+      removeMealsFromLS(mealData.idMeal);
+    } else {
+      addMealToLS(mealData.idMeal);
+    }
+    LikeButton.classList.toggle("fa-regular");
+    LikeButton.classList.toggle("fa-solid");
+
+    // addMealToLS(meal)
+  });
+};
+
+const addMealToLS = (addedId) => {
+  const mealids = gteMealsFromLS();
+
+  localStorage.setItem("mealids", JSON.stringify([...mealids, addedId])); // [...] is the spread operator which adds individual items of an array
+};
+const removeMealsFromLS = (removedId) => {
+  const mealids = gteMealsFromLS();
+  localStorage.setItem(
+    "mealids",
+    JSON.stringify(mealids.filter((id) => id !== removedId))
+  );
+};
+const gteMealsFromLS = () => {
+  const mealids = JSON.parse(localStorage.getItem("mealids"));
+  return mealids === null ? [] : mealids;
 };
